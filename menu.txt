@@ -1,0 +1,25 @@
+{
+  "options": [
+    {
+      "name": "Pizza",
+      "items": [
+        "Margherita Pizza",
+        "Pepperoni Pizza",
+        "Vegetarian Pizza"
+        // Add more pizza options as needed
+      ]
+    },
+    {
+      "name": "Biryani",
+      "items": [
+        "Chicken Biryani",
+        "Vegetable Biryani",
+        "Beef Biryani"
+        // Add more biryani options as needed
+      ]
+    },
+    {
+      "name": "Exit"
+    }
+  ]
+}
