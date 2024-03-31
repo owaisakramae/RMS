@@ -1,0 +1,1 @@
+{"Waiter1": {"role": "Waiter", "pay": "1200", "password": "abc12"}, "Waiter2": {"role": "Waiter", "pay": "1200", "password": "1234"}, "Chef1": {"role": "Chef", "pay": "1200", "password": "1234"}, "Admin": {"role": "Admin", "pay": "1200", "password": "admin"}}

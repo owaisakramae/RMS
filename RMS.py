@@ -12,45 +12,59 @@ class Restaurant:
         self.orders=[]
     
     def load_data(self):
+        folder_path = "Files"
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
         try:
-            with open('Stock.txt', 'r') as file:
+            with open(os.path.join(folder_path, 'Stock.txt'), 'r') as file:
                 self.inventory = json.load(file)
         except FileNotFoundError:
-            print("Stock File not available")     
+            print("Stock File not available")
+
         try:
-            with open('Ingredients.txt', 'r') as file:
+            with open(os.path.join(folder_path, 'Ingredients.txt'), 'r') as file:
                 self.recipes = json.load(file)
         except FileNotFoundError:
             print("Ingredients File not available")
+
         try:
-            with open('Used_Stock.txt', 'r') as s:
+            with open(os.path.join(folder_path, 'Used_Stock.txt'), 'r') as s:
                 self.usedstock = json.load(s)
         except FileNotFoundError:
-            with open('Used_Stock.txt', 'w') as s:
+            with open(os.path.join(folder_path, 'Used_Stock.txt'), 'w') as s:
                 json.dump([], s)
                 self.usedstock = []
+
         try:
-            with open('Sales.txt', 'r') as f:
+            with open(os.path.join(folder_path, 'Sales.txt'), 'r') as f:
                 self.sales = json.load(f)
         except FileNotFoundError:
             self.sales = []
+
         try:
-            with open('employee.txt','r') as e:
-                self.employees=json.load(e)
+            with open(os.path.join(folder_path, 'employee.txt'), 'r') as e:
+                self.employees = json.load(e)
         except FileNotFoundError:
-            self.employees={}
+            self.employees = {}
     
     def save_data(self):
-        with open('Stock.txt', 'w') as file:
+        folder_path = "Files"
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+        with open(os.path.join(folder_path, 'Stock.txt'), 'w') as file:
             json.dump(self.inventory, file)
-        with open('Ingredients.txt', 'w') as file:
+
+        with open(os.path.join(folder_path, 'Ingredients.txt'), 'w') as file:
             json.dump(self.recipes, file)
-        with open('Used_Stock.txt', 'w') as f:
+
+        with open(os.path.join(folder_path, 'Used_Stock.txt'), 'w') as f:
             json.dump(self.usedstock, f)
-        with open('sales.txt','w') as s:
-            json.dump(self.sales,s)
-        with open('employee.txt','w') as e:
-            json.dump(self.employees,e)
+
+        with open(os.path.join(folder_path, 'sales.txt'), 'w') as s:
+            json.dump(self.sales, s)
+
+        with open(os.path.join(folder_path, 'employee.txt'), 'w') as e:
+            json.dump(self.employees, e)
     
     def add_inventory(self, item):
         quantity=self.get_integer_input("Enter the quantity: ")
@@ -122,7 +136,7 @@ class Restaurant:
                     else:
                         return selected_item['name'], selected_item['price'], {}
                 elif choice==0:
-                    restaurant.clear_screen()
+                    self.clear_screen()
                     return None,None,None
                 
                 else:
@@ -210,7 +224,7 @@ class Restaurant:
         while True:
             size_choice = self.get_integer_input("Enter the number of the size you want to change the price for: ")
             if size_choice == 0:
-                restaurant.clear_screen()
+                self.clear_screen()
                 return
             elif size_choice < 1 or size_choice > len(self.recipes['menu'][item]):
                 print("Invalid size choice.")
@@ -237,7 +251,6 @@ class Restaurant:
         else:
             print("Invalid order.")
   
-    
     def print_order(self,orders):
         print("Item-----------------------Quanity--------------------Price (PKR)")
         order_summary = {}
@@ -249,7 +262,7 @@ class Restaurant:
             else:
                 order_summary[item] = {'quantity': quantity, 'price': price}
         for item, summary in order_summary.items():
-            print(f"{item}                 {summary['quantity']}                           {summary['price']}")
+            print(f"{item:<30}{summary['quantity']:<28}{summary['price']:<10}")
         total=0
         for i,j,k,l in orders:
             total+=l
@@ -292,7 +305,14 @@ class Restaurant:
             total_pay += int(pay["pay"])
         new=total_cost+other_expenses+total_pay
         net=total_amount-new
-        print(f"The total items used in stock is {total_items} there total cost: {total_cost}.\nOther's Expenses : {other_expenses} \nTotal pay given to employees: {total_pay}\nTotal Expenses: {new}\nTotal Sales: {total_amount}\nNet: {net}")
+        print("Summary of Expenses:")
+        print(f"Total items used in stock: {total_items}   Total cost: {total_cost:<25,.2f}")
+        print(f"Other expenses: {other_expenses:<28,.2f}")
+        print(f"Total pay given to employees: {total_pay:<14,.2f}")
+        print(f"Total Expenses: {new:<25,.2f}")
+        print(f"Total Sales: {total_amount:<28,.2f}")
+        print(f"Net: {net:<36,.2f}")
+
         while True:
             user=input("Press b to go back: ").lower()
             if user=="b":
@@ -376,6 +396,7 @@ class Restaurant:
             print("Invalid input. Please enter a valid number.") 
     
     def change_password(self, username, old_password):
+        self.clear_screen()
         if username in self.employees:
             if self.employees[username]['password'] == old_password:
                 new_password=input("Enter new password: ")
@@ -396,17 +417,18 @@ class Restaurant:
 
         total_q=0
         total_p=0
-        print("Item\t\tSize\tQuantity\tPrice")
+        print("Item\t\tSize\t\tQuantity\tPrice(PKR)")
         for (item_name, size), (total_quantity, total_price) in item_totals.items():
             total_q+=total_quantity
             total_p+=total_price
-            print(f"{item_name}\t\t{size}\t{total_quantity}\t\t{total_price}")
+            print(f"{item_name:<15}{size:<20}{total_quantity:<15}{total_price:<10}")
         print(f"Total Quantity: {total_q} Total Price: {total_p}")
         while True:
             user=input("Press b to go back: ").lower()
             if user=="b":
                 print("Going Back")
-                break
+                self.clear_screen()
+                return
             else:
                 print("Wrong input")
     
@@ -417,10 +439,11 @@ class Restaurant:
         self.clear_screen()
         print("Current Inventory:")
         while True:
+            print("Item                 Quantity               Price(PKR)")
             for item, details in self.inventory['stock'].items():
-                print(f"{item.capitalize()}:")
-                print(f"  Quantity: {details['quantity']} {details['unit']}")
-                print(f"  Price per {details['unit']}: PKR {details['price_per_grams']:.2f}")
+                quantity = f"{details['quantity']:.1f} {details['unit']}"
+                price = f"{details['price_per_grams']:.2f} per {details['unit']}"
+                print(f"{item.capitalize():<20} {quantity:<20} {price:<20}")
             user=input("Press b to go back: ").lower()
             if user=='b':
                 self.clear_screen()
@@ -448,7 +471,7 @@ class Restaurant:
         while True:
             ingredient_name = input("Enter the name of the ingredient you want to update or b to go back: ").lower()
             if ingredient_name in self.inventory['stock']:
-                new_price_per_grams = restaurant.get_float_input(f"Enter the new price per grams for {ingredient_name}: ")
+                new_price_per_grams = self.get_float_input(f"Enter the new price per grams for {ingredient_name}: ")
                 self.inventory['stock'][ingredient_name]["price_per_grams"] = new_price_per_grams
                 print(f"Price per grams for {ingredient_name} updated successfully.")
             elif ingredient_name=='b':
@@ -468,30 +491,32 @@ class Employee:
         print("Role: ",self.role)
         print("Pay: PKR",self.pay)
         print("Password: ",self.password)
-    def to_dict(self):
-        return {
-            "username": self.username,
-            "role":self.role,
-            "pay": self.pay,
-            "password":self.password
-        }
-    # def disp_funct(self):
-    #     print("Displaying Function")
-    #     print("1-Display Details")
-    #     while True:
-    #         choice = restaurant.get_integer_input("Enter your choice: ")
-    #         if choice==1:
-    #             self.display_detials() 
-    #         else:
-    #             print("Error!")
 
 class Admin(Employee):
     def __init__(self, name,role,pay,password):
         super().__init__(name,role,pay,password)
     def display_detials(self):
         return super().display_detials()
-    def to_dict(self):
-        return super().to_dict()
+
+    def AddStock(self,inventory):
+        restaurant.add_inventory(inventory)
+    def DeleteStock(self):
+        restaurant.delete_inventory()
+    def ProfitLoss(self):
+        restaurant.profit_loss()
+    def SalesRecord(self):
+        restaurant.display_orders()
+    def CreateAccount(self):
+        restaurant.create_account()
+    def DeleteAccount(self,account):
+        restaurant.delete_employee(account)
+    def StockPriceUpdate(self):
+        restaurant.update_price_per_grams()
+    def ChangeItemPrice(self,item):
+        restaurant.change_price(item)
+    def CalculateUnitPrice(self,item,subitem):
+        restaurant.calculate_unit(item,subitem)
+
     def disp_funct(self):
         while True:
             print("----------Admin Menu------------")
@@ -521,14 +546,14 @@ class Admin(Employee):
                     continue 
             elif choice == 2:
                 restaurant.change_password(self.username,self.password)
-                restaurant.clear_screen()
+                
             elif choice ==3:
                 restaurant.clear_screen()
                 user=input("Enter the name to add stock: ").lower()
-                restaurant.add_inventory(user)
+                self.AddStock(user)
             elif choice==4:
                 restaurant.clear_screen()
-                restaurant.delete_inventory()
+                self.DeleteStock()
             elif choice==5:
                 restaurant.clear_screen()
                 restaurant.display_inventory()
@@ -536,9 +561,8 @@ class Admin(Employee):
             elif choice==6:
                 restaurant.clear_screen()
                 a=restaurant.display_available_items()
-                
                 restaurant.clear_screen()
-                if restaurant.change_price(a) == 0:
+                if self.ChangeItemPrice(a) == 0:
                     restaurant.clear_screen()
                     continue 
             elif choice==7:
@@ -548,34 +572,32 @@ class Admin(Employee):
                     break
                 restaurant.clear_screen()
                 b,c,d=restaurant.display_menu(a)
-                restaurant.calculate_unit(a,b)
+                self.CalculateUnitPrice(a,b)
                 restaurant.clear_screen()
             elif choice==8:
                 restaurant.clear_screen()
-                restaurant.update_price_per_grams()
-         
+                self.StockPriceUpdate()
             elif choice==9:
                 restaurant.clear_screen()
-                restaurant.profit_loss()
+                self.ProfitLoss()
                 restaurant.clear_screen()
             elif choice==10:
                 restaurant.clear_screen()
-                restaurant.display_orders()
+                self.SalesRecord()
                 restaurant.clear_screen()
             elif choice==11:
                 restaurant.clear_screen()
-                restaurant.create_account()
+                self.CreateAccount()
             elif choice==12:
                 restaurant.clear_screen()
-                restaurant.delete_employee(self.username)
+                self.DeleteAccount(self.username)
 
 class Waiter(Employee):
     def __init__(self, name, role, pay, password):
         super().__init__(name, role, pay, password)
     def display_detials(self):
         return super().display_detials()
-    def to_dict(self):
-        return super().to_dict()
+    
     def disp_funct(self):
         while True:
             print("----------Waiter Menu----------")
@@ -621,7 +643,6 @@ class Waiter(Employee):
             elif choice == 3:
                 restaurant.change_password(self.username,self.password)
                 restaurant.clear_screen()
-                
             else:
                 print("Error! Invalid choice.")
     
@@ -630,8 +651,12 @@ class Chef(Employee):
         super().__init__(username, role, pay, password)
     def display_detials(self):
         return super().display_detials()
-    def to_dict(self):
-        return super().to_dict()
+    def AddRecipe(self,item):
+        restaurant.add_recipe(item)
+    def RemoveRecipe(self,item):
+        restaurant.remove_recipe(item)
+    def ChangeRecipe(self,item):
+        restaurant.change_recipe(item)
     def disp_funct(self):
         while True:
             print("---------Chef Menu-----------")
@@ -658,15 +683,15 @@ class Chef(Employee):
             elif choice==3:
                 restaurant.clear_screen()
                 user_val=input("Enter name of recipe that you want to add: ").capitalize()
-                restaurant.add_recipe(user_val)
+                self.AddRecipe(user_val)
             elif choice==4:
                 restaurant.clear_screen()
                 cat=restaurant.display_available_items()
-                restaurant.remove_recipe(cat)
+                self.RemoveRecipe(cat)
             elif choice==5:
                 restaurant.clear_screen()
                 cat=restaurant.display_available_items()
-                restaurant.change_recipe(cat)
+                self.ChangeRecipe(cat)
             else:
                 print("Invalid Input!")
     
