@@ -17,6 +17,7 @@ The Restaurant Management System (RMS) GitHub project is designed to efficiently
 10. **Check Sales Record**: Review sales records for insights into performance.
 11. **Create Account for Workers**: Register new accounts for staff members.
 12. **Delete Account for Workers**: Remove accounts of former or inactive staff.
+13. **Exit**: Logout from the system.
 
 ### Chef Menu
 1. **Personal Details**: Access and manage personal information.
@@ -24,6 +25,7 @@ The Restaurant Management System (RMS) GitHub project is designed to efficiently
 3. **Add Recipe**: Add new recipes to the restaurant's menu.
 4. **Remove Recipe**: Delete existing recipes from the menu.
 5. **Change Recipe**: Modify ingredients or steps in a recipe.
+6. **Exit**: Logout from the system.
 
 ### Waiter Menu
 1. **Personal Details**: View and manage personal information.
