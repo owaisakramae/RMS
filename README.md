@@ -1,6 +1,6 @@
 # Restaurant Management System (RMS)
 
-The Restaurant Management System (RMS) GitHub project is designed to efficiently manage various tasks and operations within a restaurant environment. Additionally, it manages the stock inventory on the backend. This project is built using file handling.
+The Restaurant Management System (RMS) project is a terminal-based application designed to efficiently manage various tasks and operations within a restaurant environment. Additionally, it includes functionality for managing the stock inventory on the backend. This project is implemented using file handling.
 
 ## Features
 
