@@ -1,6 +1,6 @@
 # Restaurant Management System (RMS)
 
-The Restaurant Management System (RMS) project is a terminal-based application designed to efficiently manage various tasks and operations within a restaurant environment. Additionally, it includes functionality for managing the stock inventory on the backend. This project is implemented using file handling.
+The Restaurant Management System (RMS) project is a terminal-based application designed to efficiently manage various tasks and operations within a restaurant environment. Additionally, it includes functionality for managing stock inventory, ensuring that stock levels are updated dynamically based on orders made and recipes used. This project is implemented using file handling for data management and storage.
 
 ## Features
 
